@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست کامل املاک کرمانشاه</title>
+    <link rel="stylesheet" href="../libs/css/all.min.css" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/pages/estates.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>لیست کامل املاک</h2>
+            <div class="header-actions">
+                <button id="back-to-map-btn" class="secondary small">
+                    <i class="fas fa-map"></i> بازگشت به نقشه
+                </button>
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <div class="form-group">
+                <input type="text" id="search-input" placeholder="جستجوی عنوان، محله یا توضیحات..." autocomplete="off">
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox path">
+                    <input type="checkbox" id="featured-filter">
+                    <svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg>
+                </label>
+                <label for="featured-filter">فقط املاک ویژه</label>
+            </div>
+            <div class="form-group">
+                <label>نوع ملک</label>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    <button class="small estate-type-filter active" data-type="all">همه</button>
+                    <button class="small estate-type-filter" data-type="apartment">آپارتمان</button>
+                    <button class="small estate-type-filter" data-type="villa">ویلایی</button>
+                    <button class="small estate-type-filter" data-type="land">زمین</button>
+                    <button class="small estate-type-filter" data-type="store">مغازه</button>
+                    <button class="small estate-type-filter" data-type="office">دفتر کار</button>
+                    <button class="small estate-type-filter" data-type="old">کلنگی</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>محدوده قیمت (تومان)</label>
+                <div class="price-inputs">
+                    <input type="number" id="min-price" placeholder="حداقل" class="form-control" min="0">
+                    <input type="number" id="max-price" placeholder="حداکثر" class="form-control" min="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>محدوده متراژ (متر)</label>
+                <div class="price-inputs">
+                    <input type="number" id="min-area" placeholder="حداقل" class="form-control" min="0">
+                    <input type="number" id="max-area" placeholder="حداکثر" class="form-control" min="0">
+                </div>
+            </div>
+            <button id="apply-filter" class="secondary">
+                <i class="fas fa-filter"></i> اعمال فیلتر
+            </button>
+            <button id="reset-filter" class="delete">
+                <i class="fas fa-times"></i> حذف فیلتر
+            </button>
+        </div>
+
+        <div class="estate-list-full" id="estate-list-full-container">
+            <p style="text-align: center; padding: 20px; color: #666;">در حال بارگذاری املاک...</p>
+        </div>
+        <div class="pagination" id="pagination-controls"></div>
+    </div>
+
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h3 id="custom-alert-title"></h3>
+            <p id="custom-alert-message"></p>
+            <div class="custom-modal-buttons">
+                <button class="confirm-btn" id="custom-alert-ok-btn">تایید</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/pages/estatesList.js"></script>
+</body>
+</html>

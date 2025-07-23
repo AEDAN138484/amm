@@ -1,0 +1,74 @@
+:root {
+    --primary-color: #6B46C1; 
+    --secondary-color: #4C51BF; 
+    --accent-color: #805AD5; 
+    --danger-color: #E53E3E; 
+    --success-color: #38A169; 
+    --warning-color: #f59e0b; 
+    --star-color: #f59e0b;
+    
+    --bg-color: #F7FAFC; 
+    --panel-bg-color: #FFFFFF;
+    --text-color: #4A5568; 
+    --text-color-dark: #2D3748; 
+    --border-color: #E2E8F0; 
+
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 10px 15px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 20px 25px rgba(0, 0, 0, 0.1);
+    
+    --gradient-primary: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    --gradient-secondary: linear-gradient(to right, var(--secondary-color), #667EEA);
+
+    --checkbox-background: var(--panel-bg-color); 
+    --checkbox-border: var(--border-color); 
+    --checkbox-border-hover: #A0AEC0; 
+    --checkbox-border-active: var(--primary-color); 
+    --checkbox-tick: white; 
+}
+
+body[data-theme="dark"] {
+    --primary-color: #805AD5;
+    --secondary-color: #667EEA;
+    --accent-color: #9F7AEA;
+    --danger-color: #FC8181;
+    --success-color: #68D391;
+    --warning-color: #f6ad55; 
+    --star-color: #f6ad55;
+
+    --bg-color: #1A202C;
+    --panel-bg-color: #2D3748;
+    --text-color: #A0AEC0;
+    --text-color-dark: #E2E8F0;
+    --border-color: #4A5568;
+    
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 10px 15px rgba(0, 0, 0, 0.25);
+    --shadow-large: 0 20px 25px rgba(0, 0, 0, 0.3);
+
+    --gradient-primary: linear-gradient(to right, #9F7AEA, #B794F4);
+    --gradient-secondary: linear-gradient(to right, #7F9CF5, #A0BCEA);
+
+    --checkbox-background: var(--panel-bg-color);
+    --checkbox-border: var(--border-color);
+    --checkbox-border-hover: #A0AEC0;
+    --checkbox-border-active: var(--primary-color);
+    --checkbox-tick: white;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

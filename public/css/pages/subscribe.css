@@ -1,0 +1,62 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+}
+.subscribe-container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 20px;
+}
+.subscribe-container h2 {
+    color: var(--text-color-dark);
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+.subscribe-container p {
+    font-size: 1.2em;
+    color: var(--text-color);
+    margin-bottom: 40px;
+}
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+.plan-card {
+    background: var(--panel-bg-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+.plan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-large);
+}
+.plan-card h3 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin: 0 0 15px 0;
+}
+.plan-card .price {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: var(--text-color-dark);
+    margin-bottom: 25px;
+}
+.plan-card .price span {
+    font-size: 0.5em;
+    font-weight: normal;
+    color: var(--text-color);
+}
+.plan-card button {
+    width: 100%;
+}
+#logout-btn {
+    margin-top: 40px;
+}

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم جامع املاک</title>
+    
+    <link rel="stylesheet" href="../libs/css/leaflet.css" />
+    <link rel="stylesheet" href="../libs/css/all.min.css" />
+    <link rel="stylesheet" href="../libs/css/persian-datepicker.min.css" />
+    <link rel="stylesheet" href="../libs/css/MarkerCluster.css" />
+    <link rel="stylesheet" href="../libs/css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="../libs/css/leaflet.draw.css" />
+
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/map.css">
+    <link rel="stylesheet" href="../css/pages/estates.css">
+</head>
+<body>
+    <div class="spinner-overlay" id="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="map-container">
+        <div id="map"></div>
+        <button class="panel-toggle" id="panel-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="theme-toggle-fixed">
+            <i class="fas fa-sun"></i>
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="theme-slider round"></div>
+            </label>
+            <i class="fas fa-moon"></i>
+        </div>
+        <button type="button" class="quiet-mode-toggle" id="quiet-mode-btn" title="حالت خلوت">
+            <i class="fas fa-home"></i>
+        </button>
+        <div class="control-panel" id="control-panel">
+            <div class="control-panel-header">
+                <h2 id="agency-name-display">سیستم جامع املاک</h2>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span id="current-date" style="font-size: 0.8em; color: var(--text-color);"></span>
+                 <div class="header-actions-buttons">
+                    <button type="button" id="agency-panel-btn" class="secondary small" style="display: none; margin: 0 5px;">
+                        <i class="fas fa-users-cog"></i>  بنگاه
+                    </button>
+                    <button type="button" id="super-admin-panel-btn" class="secondary small" style="display: none; margin: 0 5px;">
+                        <i class="fas fa-user-shield"></i>  مدیریت
+                    </button>
+                    <button type="button" id="logout-btn" class="delete small" style="margin: 0;">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </button>
+                 </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="search">جستجو</div>
+                <div class="tab" data-tab="add"> املاک</div>
+                <div class="tab" data-tab="stats">آمار</div>
+            </div>
+            
+            <div id="search-tab" class="tab-content active">
+                <div class="search-filter">
+                    <form id="search-form">
+                        <div class="form-group">
+                            <input type="text" id="search-input" placeholder="جستجوی عنوان، آدرس، مالک، تلفن و..." autocomplete="off">
+                        </div>
+                        
+                        <div class="checkbox-container">
+                            <label class="checkbox path">
+                                <input type="checkbox" id="featured-filter">
+                                <svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg>
+                            </label>
+                            <label for="featured-filter">فقط املاک ویژه</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>نوع ملک</label>
+                            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                <button type="button" class="small estate-type-filter active" data-type="all">همه</button>
+                                <button type="button" class="small estate-type-filter" data-type="apartment">آپارتمان</button>
+                                <button type="button" class="small estate-type-filter" data-type="villa">ویلایی</button>
+                                <button type="button" class="small estate-type-filter" data-type="land">زمین</button>
+                                <button type="button" class="small estate-type-filter" data-type="store">مغازه</button>
+                                <button type="button" class="small estate-type-filter" data-type="office">دفتر کار</button>
+                                <button type="button" class="small estate-type-filter" data-type="old">کلنگی</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>محدوده قیمت (تومان)</label>
+                            <div class="price-inputs">
+                                <input type="number" id="min-price" placeholder="حداقل" class="form-control" min="0">
+                                <input type="number" id="max-price" placeholder="حداکثر" class="form-control" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>محدوده متراژ (متر)</label>
+                            <div class="price-inputs">
+                                <input type="number" id="min-area" placeholder="حداقل" class="form-control" min="0">
+                                <input type="number" id="max-area" placeholder="حداکثر" class="form-control" min="0">
+                            </div>
+                        </div>
+                        <button type="button" id="apply-filter" class="secondary">
+                            <i class="fas fa-filter"></i> اعمال فیلتر
+                        </button>
+                        <button type="button" id="reset-filter" class="delete">
+                            <i class="fas fa-times"></i> حذف فیلتر
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="estate-list">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3>لیست املاک (<span id="estate-count">0</span>)</h3>
+                        <div>
+                            <button type="button" id="sort-by-price" class="small secondary">
+                                <i class="fas fa-sort-amount-down"></i> قیمت
+                            </button>
+                            <button type="button" id="go-to-estates-list-btn" class="small secondary" style="margin-right: 0;">
+                                <i class="fas fa-list-ul"></i> لیست کامل
+                            </button>
+                        </div>
+                    </div>
+                    <div id="estate-items-container"></div>
+                </div>
+            </div>
+            
+            <div id="add-tab" class="tab-content">
+                <div id="step1" class="form-steps active">
+                    <h3 id="form-step1-title"><i class="fas fa-map-marker-alt"></i> تعیین موقعیت ملک</h3>
+                    <p>لطفاً روی نقشه در محل دقیق ملک کلیک کنید</p>
+                    <button type="button" id="confirm-location" class="secondary">
+                        <i class="fas fa-check"></i> تأیید موقعیت
+                    </button>
+                    <button type="button" id="cancel-edit" class="delete" style="display: none;">
+                        <i class="fas fa-times"></i> انصراف از ویرایش
+                    </button>
+                </div>
+                
+                <div id="step2" class="form-steps">
+                    <h3 id="form-step2-title"><i class="fas fa-home"></i> مشخصات ملک</h3>
+                    
+                    <form id="estate-form">
+                        <div class="form-group form-group-category all">
+                            <label for="estate-title">عنوان ملک:</label>
+                            <input type="text" id="estate-title" placeholder="مثال: آپارتمان 120 متری">
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="owner-name">مالک:</label>
+                            <input type="text" id="owner-name" placeholder="نام و نام خانوادگی مالک">
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="owner-phone">تلفن همراه مالک:</label>
+                            <input type="tel" id="owner-phone" placeholder="مثال: 09123456789">
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="estate-date">تاریخ:</label>
+                            <input type="text" id="estate-date" autocomplete="off">
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="estate-address">آدرس دقیق:</label>
+                            <input type="text" id="estate-address" placeholder="خیابان، کوچه، پلاک">
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="deal-type">نوع معامله:</label>
+                            <select id="deal-type">
+                                <option value="">هیچکدام</option>
+                                <option value="pre-sale">پیش فروش</option>
+                                <option value="sale">فروش</option>
+                                <option value="mortgage">رهن</option>
+                                <option value="rent">اجاره</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="estate-type">نوع ملک:</label>
+                            <select id="estate-type">
+                                <option value="">هیچکدام</option>
+                                <option value="apartment">آپارتمان</option>
+                                <option value="old">کلنگی</option>
+                                <option value="store">مغازه</option>
+                                <option value="office">دفتر کار</option>
+                                <option value="villa">ویلایی</option>
+                                <option value="land">زمین</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group form-group-category old">
+                             <label for="renovation-status">وضعیت سازه:</label>
+                             <select id="renovation-status">
+                                 <option value="">هیچکدام</option>
+                                 <option value="old">قدیمی</option>
+                                 <option value="renovated">بازسازی شده</option>
+                                 <option value="new">نوساز</option>
+                             </select>
+                        </div>
+                        <div class="form-group form-group-category old">
+                             <label for="alley-width">عرض کوچه (متر):</label>
+                             <input type="number" id="alley-width" placeholder="مثال: 8" min="0">
+                        </div>
+
+                        <div class="form-group form-group-category all">
+                            <label for="total-price">قیمت کل / ودیعه (تومان):</label>
+                            <input type="text" id="total-price" placeholder="مثال: 2500000000" min="0">
+                            <div class="price-in-words" id="total-price-words"></div>
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="price-per-meter">قیمت متری / اجاره (تومان):</label>
+                            <input type="text" id="price-per-meter" placeholder="مثال: 20000000" min="0">
+                            <div class="price-in-words" id="price-per-meter-words"></div>
+                        </div>
+                        <div class="form-group form-group-category apartment villa old store office">
+                            <label for="built-area">متراژ سازه / زیربنا (متر):</label>
+                            <input type="number" id="built-area" placeholder="مثال: 120" min="0">
+                        </div>
+                        
+                        <div class="form-group form-group-category apartment villa office">
+                            <label for="orientation">جهت ملک:</label>
+                            <select id="orientation">
+                                <option value="">هیچکدام</option>
+                                <option value="north">شمالی</option>
+                                <option value="south">جنوبی</option>
+                                <option value="east">شرقی</option>
+                                <option value="west">غربی</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-category apartment villa office">
+                            <label for="total-floors">تعداد طبقات:</label>
+                            <input type="number" id="total-floors" placeholder="مثال: 5" min="0">
+                        </div>
+                        <div class="form-group form-group-category apartment  office">
+                            <label for="total-units">تعداد کل واحدها:</label>
+                            <input type="number" id="total-units" placeholder="مثال: 10" min="0">
+                        </div>
+                        <div class="form-group form-group-category apartment  office">
+                            <label for="floor">طبقه:</label>
+                            <input type="number" id="floor" placeholder="مثال: 2" min="0">
+                        </div>
+
+                        <div class="form-group form-group-category apartment villa office">
+                            <div class="checkbox-container">
+                                 <label class="checkbox path">
+                                    <input type="checkbox" id="has-bedroom">
+                                    <svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg>
+                                </label>
+                                <label for="has-bedroom">اتاق خواب دارد</label>
+                            </div>
+                           
+                            <label for="bedroom-count-main" style="display: inline-block; margin-right: 10px;">تعداد:</label>
+                            <input type="number" id="bedroom-count-main" placeholder="تعداد" min="0" style="width: calc(50% - 60px); display: inline-block;" disabled>
+                            <div id="bedrooms-container"></div>
+                        </div>
+
+                        <div class="form-group form-group-category apartment villa  office">
+                            <label for="kitchen-cabinets">کابینت آشپزخانه:</label>
+                            <select id="kitchen-cabinets">
+                                <option value="">هیچکدام</option>
+                                <option value="mdf">MDF</option>
+                                <option value="metal">فلزی</option>
+                                <option value="highgloss">هایگلاس</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-category apartment villa  office">
+                            <label for="bathroom-type">سرویس بهداشتی:</label>
+                            <select id="bathroom-type">
+                                <option value="">هیچکدام</option>
+                                <option value="iranian">ایرانی</option>
+                                <option value="western">فرنگی</option>
+                                <option value="both">هردو</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-category apartment villa  office">
+                            <label for="flooring">کف‌پوش:</label>
+                            <select id="flooring">
+                                <option value="">هیچکدام</option>
+                                <option value="ceramic">سرامیک</option>
+                                <option value="parquet">پارکت</option>
+                                <option value="stone">سنگ</option>
+                                <option value="carpet">موکت</option>
+                            </select>
+                        </div>
+
+                        <div class="checkbox-container form-group-category apartment villa  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-parking"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-parking"> پارکینگ</label>
+                        </div>
+                        <div class="checkbox-container form-group-category apartment villa  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-storage"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-storage"> انباری</label>
+                        </div>
+                        <div class="checkbox-container form-group-category apartment villa  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-balcony"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-balcony"> بالکن</label>
+                        </div>
+                        
+                        <div class="form-group form-group-category apartment villa  office">
+                            <label for="cooler-type">کولر:</label>
+                            <select id="cooler-type">
+                                <option value="">هیچکدام</option>
+                                <option value="water">آبی</option>
+                                <option value="gas">گازی</option>
+                            </select>
+                        </div>
+
+                        <div class="checkbox-container form-group-category apartment villa  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-package"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-package"> پکیج</label>
+                        </div>
+                        <div class="checkbox-container form-group-category apartment villa  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-heater"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-heater"> بخاری</label>
+                        </div>
+                        <div class="checkbox-container form-group-category apartment  office">
+                            <label class="checkbox path"><input type="checkbox" id="has-elevator"><svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg></label><label for="has-elevator"> آسانسور</label>
+                        </div>
+
+                        <div class="form-group form-group-category all">
+                            <label for="property-status">وضعیت ملک:</label>
+                            <select id="property-status">
+                                <option value="">هیچکدام</option>
+                                <option value="owner-occupied">تحت استفاده مالک</option>
+                                <option value="vacant">تخلیه</option>
+                                <option value="rented">اجاره</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="building-age">سن بنا (سال):</label>
+                            <input type="number" id="building-age" placeholder="مثال: 5" min="0">
+                        </div>
+
+                        <div class="form-group form-group-category land old">
+                            <label for="land-area">مساحت زمین (متر):</label>
+                            <input type="number" id="land-area" placeholder="مثال: 200" min="0">
+                        </div>
+                        <div class="form-group form-group-category land old">
+                            <label for="frontage">طول بر (متر):</label>
+                            <input type="number" id="frontage" placeholder="مثال: 10" min="0">
+                        </div>
+
+                        <div class="form-group form-group-category all">
+                            <label for="estate-description">توضیحات:</label>
+                            <textarea id="estate-description" rows="3" placeholder="امکانات ملک، شرایط فروش و..."></textarea>
+                        </div>
+                        <div class="form-group form-group-category all">
+                            <label for="estate-images">عکس‌ها (حداکثر 3 عدد، اختیاری):</label>
+                            <input type="file" id="estate-images" accept="image/*" multiple>
+                            <div class="image-preview" id="image-preview"></div>
+                        </div>
+                        
+                        <div class="checkbox-container form-group-category all">
+                            <label class="checkbox path">
+                                <input type="checkbox" id="estate-featured">
+                                <svg viewBox="0 0 21 21"><path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 20,18.65 20,17 L20,7.99769186"></path></svg>
+                            </label>
+                            <label for="estate-featured">ملک ویژه</label>
+                        </div>
+
+                        <button type="submit" id="submit-estate-btn" class="secondary">
+                            <i class="fas fa-save"></i> ثبت ملک
+                        </button>
+                        <button type="button" id="back-to-location" class="delete">
+                            <i class="fas fa-arrow-right"></i> بازگشت به انتخاب موقعیت
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="stats-tab" class="tab-content">
+                <h3><i class="fas fa-chart-bar"></i> آمار و گزارشات</h3>
+                <div id="stats-container" style="margin-top: 20px;">
+                    <div style="padding: 15px; border-radius: 8px; margin-bottom: 15px; background: var(--panel-bg-color);">
+                        <h4>تعداد املاک بر اساس نوع</h4>
+                        <canvas id="estate-type-stats" style="max-height: 200px;"></canvas>
+                    </div>
+                    <div style="padding: 15px; border-radius: 8px; background: var(--panel-bg-color);">
+                        <h4>میانگین قیمت بر اساس نوع ملک</h4>
+                        <canvas id="price-stats" style="max-height: 200px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h3 id="custom-alert-title"></h3>
+            <p id="custom-alert-message"></p>
+            <div class="custom-modal-buttons">
+                <button class="confirm-btn" id="custom-alert-ok-btn">تایید</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../libs/js/jquery.min.js"></script>
+    <script src="../libs/js/leaflet.js"></script>
+    <script src="../libs/js/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+    <script src="../libs/js/persian-datepicker.min.js"></script>
+    <script src="../libs/js/leaflet.markercluster.js"></script>
+    <script src="../libs/js/leaflet.draw.js"></script>
+    
+    <script src="../js/api.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/form.js"></script>
+    <script src="../js/map.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/theme.js"></script>
+</body>
+</html>

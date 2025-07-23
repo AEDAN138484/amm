@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت زوپر ادمین</title>
+    <link rel="stylesheet" href="../libs/css/all.min.css" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>پنل مدیریت زوپر ادمین</h2>
+            <div class="header-actions">
+                <button id="back-to-map-btn" class="secondary small"><i class="fas fa-map"></i> بازگشت به نقشه</button>
+            </div>
+        </div>
+
+        <div class="form-section super-admin-only">
+            <h3><i class="fas fa-user-shield"></i> مدیریت سوپر ادمین‌ها (پشتیبانی)</h3>
+             <form id="add-support-admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="support-username">نام کاربری جدید</label>
+                        <input type="text" id="support-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="support-password">رمز عبور</label>
+                        <input type="text" id="support-password" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="secondary">ایجاد سوپر ادمین</button>
+            </form>
+            <div class="table-container">
+                <table id="admins-table">
+                    <thead>
+                        <tr>
+                            <th>نام کاربری</th>
+                            <th>نقش</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admins-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="form-section super-admin-only">
+            <h3><i class="fas fa-user-cog"></i> مدیریت حساب کاربری زوپر ادمین</h3>
+            <form id="super-admin-credentials-form">
+                <div class="form-group">
+                    <label for="current-password">رمز عبور فعلی (برای تایید هویت)</label>
+                    <input type="password" id="current-password" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-super-admin-username">نام کاربری جدید</label>
+                        <input type="text" id="new-super-admin-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-super-admin-password">رمز عبور جدید</label>
+                        <input type="password" id="new-super-admin-password" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="secondary">ذخیره تغییرات حساب من</button>
+            </form>
+        </div>
+
+        <div class="form-section super-admin-only">
+            <h3><i class="fas fa-plus-circle"></i> ایجاد بنگاه جدید</h3>
+            <form id="add-agency-form">
+                 <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-agency-name">نام بنگاه</label>
+                        <input type="text" id="new-agency-name" class="form-control" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="new-agency-address">آدرس بنگاه</label>
+                        <input type="text" id="new-agency-address" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-subscription-type">نوع اشتراک</label>
+                        <select id="new-subscription-type" class="form-control" required>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="1_month">۱ ماهه</option>
+                            <option value="3_months">۳ ماهه</option>
+                            <option value="6_months">۶ ماهه</option>
+                            <option value="1_year">۱ ساله</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-admin-username">نام کاربری مدیر</label>
+                        <input type="text" id="new-admin-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-admin-password">رمز عبور مدیر</label>
+                        <input type="text" id="new-admin-password" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="secondary">ایجاد بنگاه</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <h3><i class="fas fa-building"></i> لیست بنگاه‌ها</h3>
+            <table id="agencies-table">
+                <thead>
+                    <tr>
+                        <th>نام و آدرس بنگاه</th>
+                        <th>مدیر</th>
+                        <th>وضعیت</th>
+                        <th>تمدید اشتراک</th>
+                        <th>تاریخ انقضا</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="agencies-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="password-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content" style="width: 400px;">
+            <h3>تغییر رمز عبور</h3>
+            <p>کاربر: <strong id="modal-username"></strong></p>
+            <div class="form-group" style="text-align: right;">
+                <label for="modal-new-password">رمز عبور جدید</label>
+                <input type="text" id="modal-new-password" class="form-control">
+            </div>
+            <div class="custom-modal-buttons">
+                <button class="confirm-btn" id="modal-save-password-btn">ذخیره</button>
+                <button class="cancel-btn" id="modal-cancel-btn">انصراف</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h3 id="custom-alert-title"></h3>
+            <p id="custom-alert-message"></p>
+            <div class="custom-modal-buttons"></div>
+        </div>
+    </div>
+
+    <script src="../libs/js/jquery.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/pages/superAdmin.js"></script>
+</body>
+</html>

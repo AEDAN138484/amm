@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزئیات ملک</title>
+    <link rel="stylesheet" href="../libs/css/all.min.css" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/pages/estates.css">
+</head>
+<body>
+    <div class="detail-container">
+        <div class="detail-header">
+            <h2 class="detail-header-title" id="estate-title">در حال بارگذاری...</h2>
+            <div class="detail-header-actions">
+                <button id="back-to-list-btn" class="secondary small">
+                    <i class="fas fa-list"></i> بازگشت به لیست
+                </button>
+                <button id="edit-estate-btn" class="edit small">
+                    <i class="fas fa-edit"></i> ویرایش
+                </button>
+                <button id="delete-estate-btn" class="delete small">
+                    <i class="fas fa-trash"></i> حذف
+                </button>
+            </div>
+        </div>
+
+        <div class="detail-info">
+            <div class="detail-section">
+                <h3><i class="fas fa-info-circle"></i> اطلاعات کلی</h3>
+                <div class="info-row">
+                    <div class="item all"><strong>نوع ملک:</strong> <span id="estate-type">نامشخص</span></div>
+                    <div class="item all"><strong>نوع معامله:</strong> <span id="deal-type">نامشخص</span></div>
+                    <div class="item all"><strong>قیمت کل:</strong> <span id="total-price">نامشخص</span> تومان</div>
+                    <div class="item all"><strong>آدرس:</strong> <span id="address">نامشخص</span></div>
+                    <div class="item all"><strong>مالک:</strong> <span id="owner">نامشخص</span></div>
+                    <div class="item all"><strong>تلفن مالک:</strong> <span id="phone">نامشخص</span></div>
+                    <div class="item all"><strong>وضعیت:</strong> <span id="property-status">نامشخص</span></div>
+                    <div class="item all"><strong>سن بنا:</strong> <span id="building-age">نامشخص</span> سال</div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3><i class="fas fa-home"></i> ویژگی‌های ملک</h3>
+                <div class="info-row">
+                    <div class="item all"><strong>قیمت متری:</strong> <span id="price-per-meter">نامشخص</span> تومان</div>
+                    <div class="item apartment villa old store office"><strong>متراژ سازه/زیربنا:</strong> <span id="built-area">نامشخص</span> متر</div>
+                    <div class="item land old villa"><strong>مساحت زمین:</strong> <span id="land-area">نامشخص</span> متر</div>
+                    <div class="item land old villa"><strong>طول بر:</strong> <span id="frontage">نامشخص</span> متر</div>
+                    <div class="item old"><strong>عرض کوچه:</strong> <span id="alley-width">نامشخص</span> متر</div>
+                    <div class="item old"><strong>وضعیت سازه:</strong> <span id="renovation-status">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>جهت ملک:</strong> <span id="orientation">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>تعداد طبقات:</strong> <span id="total-floors">نامشخص</span></div>
+                    <div class="item apartment office"><strong>تعداد واحدها:</strong> <span id="total-units">نامشخص</span></div>
+                    <div class="item apartment office"><strong>طبقه:</strong> <span id="floor">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>اتاق خواب:</strong> <span id="bedrooms">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>کابینت آشپزخانه:</strong> <span id="kitchen-cabinets">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>سرویس بهداشتی:</strong> <span id="bathroom-type">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>کف‌پوش:</strong> <span id="flooring">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>کولر:</strong> <span id="cooler-type">نامشخص</span></div>
+                    <div class="item apartment villa office"><strong>پارکینگ:</strong> <span id="has-parking">خیر</span></div>
+                    <div class="item apartment villa office"><strong>انباری:</strong> <span id="has-storage">خیر</span></div>
+                    <div class="item apartment villa office"><strong>بالکن:</strong> <span id="has-balcony">خیر</span></div>
+                    <div class="item apartment villa office"><strong>پکیج:</strong> <span id="has-package">خیر</span></div>
+                    <div class="item apartment villa office"><strong>بخاری:</strong> <span id="has-heater">خیر</span></div>
+                    <div class="item apartment office"><strong>آسانسور:</strong> <span id="has-elevator">خیر</span></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3><i class="fas fa-comment"></i> توضیحات</h3>
+                <p id="description">بدون توضیحات</p>
+            </div>
+
+            <div class="detail-section">
+                <h3><i class="fas fa-image"></i> تصاویر</h3>
+                <div class="detail-images" id="estate-images"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h3 id="custom-alert-title"></h3>
+            <p id="custom-alert-message"></p>
+            <div class="custom-modal-buttons">
+                <button class="confirm-btn" id="custom-alert-ok-btn">تایید</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-modal" class="image-modal-overlay">
+        <span class="image-modal-close">&times;</span>
+        <img class="image-modal-content" id="modal-image-content">
+    </div>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/pages/estateDetail.js"></script>
+</body>
+</html>

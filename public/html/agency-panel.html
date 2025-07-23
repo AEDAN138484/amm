@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت بنگاه</title>
+    <link rel="stylesheet" href="../libs/css/all.min.css" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>پنل مدیریت بنگاه</h2>
+            <div class="header-actions">
+                <button id="back-to-map-btn" class="secondary small"><i class="fas fa-map"></i> بازگشت به نقشه</button>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3><i class="fas fa-chart-line"></i> داشبورد آماری</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-home"></i>
+                    <h4>کل املاک ثبت شده</h4>
+                    <p id="total-estates-stat">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h4>املاک ویژه</h4>
+                    <p id="featured-estates-stat">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-handshake"></i>
+                    <h4>بیشترین نوع معامله</h4>
+                    <p id="top-deal-type-stat">-</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3><i class="fas fa-history"></i> آخرین فعالیت‌ها</h3>
+            <div id="logs-container" class="log-container">
+                <p>در حال بارگذاری...</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3><i class="fas fa-user-plus"></i> ایجاد کاربر جدید (مشاور)</h3>
+            <form id="add-user-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-username">نام کاربری</label>
+                        <input type="text" id="new-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">رمز عبور</label>
+                        <input type="text" id="new-password" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="secondary">ایجاد کاربر</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>نام کاربری</th>
+                        <th>نقش</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h3 id="custom-alert-title"></h3>
+            <p id="custom-alert-message"></p>
+            <div class="custom-modal-buttons"></div>
+        </div>
+    </div>
+
+    <script src="../libs/js/jquery.min.js"></script>
+    <script src="../libs/js/chart.umd.min.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/pages/agencyPanel.js"></script>
+</body>
+</html>

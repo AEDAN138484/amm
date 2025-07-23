@@ -1,0 +1,72 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
+    background-color: var(--bg-color);
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.login-box {
+    background: var(--panel-bg-color);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-large);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+.login-box h2 {
+    margin-bottom: 25px;
+    color: var(--text-color-dark);
+    font-size: 2em;
+}
+.login-box .form-group {
+    margin-bottom: 20px;
+    text-align: right;
+    position: relative;
+}
+.error-message {
+    color: var(--danger-color);
+    margin-top: 15px;
+    display: none;
+    font-weight: 500;
+}
+.login-box button {
+    width: 100%;
+    padding: 12px;
+}
+.login-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color-dark);
+}
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding-left: 40px; 
+}
+.login-box input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+.toggle-password {
+    position: absolute;
+    left: 15px; 
+    top: 70%; 
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-color);
+    z-index: 10;
+}
